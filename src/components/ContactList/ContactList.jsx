@@ -2,20 +2,17 @@ import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { DeleteButton } from './ContactList.styled';
 import { useSelector } from 'react-redux';
-import { getContacts, getFilter } from 'redux/selectors';
+import { selectContacts, selectContactsList } from 'redux/selectors';
 import { fetchContacts, deleteContact } from 'redux/operations';
-const filterContacts = (contacts, filterValue) => {
-  return contacts.filter(el => el.name.toLowerCase().includes(filterValue));
-};
 export const ContactList = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchContacts());
   }, [dispatch]);
-  const { items, isLoading, error } = useSelector(getContacts);
-  const filterValue = useSelector(getFilter);
-  // console.log('items', items);
-  const contactsList = filterValue ? filterContacts(items, filterValue) : items;
+
+  const { isLoading, error } = useSelector(selectContacts);
+
+  const contactsList = useSelector(selectContactsList);
   return (
     <div>
       {isLoading && <b>Loading tasks...</b>}
